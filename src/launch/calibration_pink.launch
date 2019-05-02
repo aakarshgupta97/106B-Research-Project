@@ -1,0 +1,31 @@
+<launch>
+	<arg name="black" default="true"/>
+	<arg name="red" default="true"/>
+	<arg name="pink" default="true"/>
+	<arg name="green" default="true"/>
+	<arg name="yellow" default="true"/>
+	
+
+	<arg name="marker_size" default="17.272" />
+	<arg name="max_new_marker_error" default="0.08" />
+	<arg name="max_track_error" default="0.2" />
+
+	<arg name="cam_image_topic" default="/kinect_head/depth_registered/points" />
+	<arg name="cam_info_topic" default="/kinect_head/rgb/camera_info" />
+	<arg name="output_frame" default="/torso_lift_link" />
+
+
+	<group if="$(arg black)">
+
+		<node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkers" respawn="false" output="screen">
+			<param name="marker_size"           type="double" value="$(arg marker_size)" />
+			<param name="max_new_marker_error"  type="double" value="$(arg max_new_marker_error)" />
+			<param name="max_track_error"       type="double" value="$(arg max_track_error)" />
+			<param name="output_frame"          type="string" value="odom" />
+
+			<remap from="camera_image"  to="/pink/camera/depth_registered/points" />
+			<remap from="camera_info"   to="/pink/camera/depth_registered/camera_info" />
+		</node>
+	</group>
+
+</launch>
